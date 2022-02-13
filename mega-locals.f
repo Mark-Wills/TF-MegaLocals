@@ -1,4 +1,4 @@
-\ Local Variables for TurboForth by Mark Wills.
+\ Local Variables for TurboForth Version 1.3 by Mark Wills.
 
 \ Version 1.1 - 19th August 2015. Machine code enhancements.
 \ Version 1.2 - 22nd March 2017.  Bug fix. See below.
