@@ -1,11 +1,11 @@
 \ Local Variables for TurboForth by Mark Wills.
 
 \ Version 1.1 - 19th August 2015. Machine code enhancements.
-\ Version 1.2 - 22nd March 2017. Bug fix. See below.
-\ Version 1.3 ( TODO) - Feb 2022 - Stack signatures (using { and }) define the locals. E.g. bounds { start count -- start_addr end_addr }
-\                          Locals processing stops at first occurence of -- or }
-\                          (maybe do this in assembler?)
-
+\ Version 1.2 - 22nd March 2017.  Bug fix. See below.
+\ Version 1.3 - 13th Feb 2022.    Stack signatures (using { and }) define the locals.
+\                                 E.g. bounds { start count -- end_addr start_addr }
+\                                 Locals processing stops at first occurence of -- or }
+\
 \ Bug fixes:
 \ Version 1.2:
 \  * locals? was not set to false by ; after compilation of a definition that
@@ -13,16 +13,21 @@
 
 
 \ An implementation of local variables.
+\
 \ Not ANS compatible.
+\
 \ Local variables are declared with the word LOCALS{ followed by a list
 \ of variable names, followed by a closing }
+\
 \ For example:
 \   TEST ( -- ) locals{ a b c } ... ... ... ;
 \ The local variables are initialised to 0 upon creation.
 \
 \ Locals are referenced in code with their names.
+\
 \ Locals may be written to with SET and +SET. E.g.
 \ : TEST ( x y z -- ) locals{ a b c } set c   set b   set a ;
+\
 \ The above example initialises the local variables a, b and c from the
 \ data on the data stack. Z goes to c, y to b, and x to a.
 \
@@ -32,8 +37,8 @@
 \   x y + z * ;
 \
 \ Where recursion is used with a definition that contains locals, each
-\ instance of the definition shall inherit its own set of new locals.
-\ These will be automatically de-allocated when the recursion un-winds.
+\ instance of the definition shall inherit its own set of new locals.\
+
 \ Locals consume no dictionary space at all. Their names are temporarily
 \ hashed during compilation only. After that their names are not required.
 \ The hash table is set to the end of RAM (see dictAddr). There is
@@ -41,14 +46,20 @@
 \ The locals stack sits immediately above the hash table and grows
 \ towards lower memory addresses (the hash table grows to higher addresses).
 \
-\ During execution, locals add very little overhead: 1 call to allocate
-\ the appropriate number of local-stack cells at the beginning of a colon
-\ definition, and a similar call to de-allocate at the end of a colon
-\ definition. References to locals are compiled as a call to @local, with an
-\ inline literal specifying the offset into the top of the locals stack. 
-\ Allocation and de-allocation of locals, reading, and writing to/from locals
-\ are implemented in machine code for faster performance.
-
+\ Enhancement for V1.3:
+\ Locals may be defined using stack comment notation, using { and } instead
+\ of ( and ). At run-time, they will be automatically populated from the stack.
+\
+\ Example:
+\ : bounds { start length -- end start } start length +  start ;
+\
+\ You MUST include -- and you MUST close your comment with } otherwise - crash!
+\
+\ if your word returns nothing, then record that in the stack comment as normal:
+\ : someWord { tom dick -- }
+\   some code here ;
+\
+\ This library takes 948 bytes.
 
 0 VALUE locals?             \ true if a colon-def has locals
 0 VALUE localCount          \ number of locals in a colon def
@@ -69,19 +80,19 @@ DECIMAL
     COMPILE (allotLocals) , ; \ n goes inline 
 
 : >HASH ( c-addr len -- u)
-  \ hashes a string using the CRC-16 algorithm
-  $FFFF             \ intial CRC16
-  -ROT              \ move it out of the way
-  OVER + SWAP DO    \ for each byte in the string
-    I C@ XOR        \ xor with CRC16
-    8 0 DO          \ for 8 bits in the byte
-        DUP 1 AND   \ note the LSB prior to shift
-        SWAP 1 >>   \ shift the CRC16
-        SWAP IF 
-            $A001 XOR \ if LSB was 1 then apply polynomial
-        THEN  
-    LOOP
-  LOOP ;
+	\ hashes a string using the CRC-16 algorithm
+	$FFFF             \ initial CRC16
+	-ROT              \ move it out of the way
+	OVER + SWAP DO    \ for each byte in the string
+		I C@ XOR        \ xor with CRC16
+		8 0 DO          \ for 8 bits in the byte
+			DUP 1 AND   \ note the LSB prior to shift
+			SWAP 1 >>   \ shift the CRC16
+			SWAP IF 
+				$A001 XOR \ if LSB was 1 then apply polynomial
+			THEN  
+		LOOP
+	LOOP ;
 
 : (LOCAL) ( addr len -- )
     ?DUP IF \ is a local. Add to fleeting locals dictionary:
@@ -93,27 +104,19 @@ DECIMAL
         localCount negate allotLocals
     THEN ;
 
-: }? ( c-addr len -- flag )
-  1 <> if drop false exit then  c@ ascii } = ;
-
 : --? ( c-addr len -- flag )
-  2 <> if drop false exit then
-  dup c@ ascii - =  swap 1+ c@ ascii - = = ;
-
-: ..} ( -- ) \ move past } in TIB
-TODO 
-NEED TO ADVANCE >IN PAST THE END OF THE TRAILING } CHARACTER
-;
-
-: locEnd? ( c-addr len -- flag )
-\ check for -- or }  return false if found, otherwise true
-  2dup }? -rot --? or dup if ..} then not ;
+	2 <> if drop TRUE exit then
+	dup c@ ascii - xor  swap 1+ c@ ascii - xor or  0= if  
+		span @ >in @ do
+			1 >in +!  tib @ i + v@ ascii } = if leave then 
+		loop
+	then FALSE ;
 
 : LOCALS{ ( "name...name }" -- )
     0 TO localCount
     TRUE TO locals?
     BEGIN
-        BL WORD  2dup locEnd?
+        BL WORD  2dup --?
     WHILE               \ while } or -- is not detected
         (LOCAL)         \ add local variable to locals dictionary
     REPEAT
@@ -174,7 +177,7 @@ NEED TO ADVANCE >IN PAST THE END OF THE TRAILING } CHARACTER
 
 ' _FIND $A006 ! \ re-vector FIND to use our FIND first
 
-\ TEST
-: BOUNDS { start len -- start end }
-  start  start len + ;
-  
+\ Test: define BOUNDS using locals
+\ : bounds { start len -- end start } 
+\  start len +  start ;
+\ 100 25 bounds  ( should push 125 100 )
