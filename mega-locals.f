@@ -58,46 +58,10 @@ $A006 @ VALUE FINDV         \ save contents of FIND vector
 VARIABLE _LS                \ top of local stack pointer
 dictAddr _LS !              \ set local stack pointer
 
-\ note: the locals stack and the locals dictionary grow away from each
-\ other. There is a pre-decrement on local stack operations, therefore
-\ it is safe to set the locals stack to the same address as the locals
-\ dictionary, as they grow away from each other.
-
-\ Assembly language enhancements:
-\ Note: the ASM definitions are commented out, so it is not necessary
-\       to load the assembler. Instead, CODE equivalents are provided
-\       directly following each ASM definition. The ASM definitions
-\       are retained in the source code in case changes are required
-\       later.
-\ asm: (allotLocals) ( -- )
-\     \ the value to allot is in-line, pointed to by PC
-\     r3 *+ r1 mov,       \ get inline parameter and jump over it
-\     r1 1 sla,           \ convert to cells 
-\     r1 _LS @@ a,        \ add it to local stack pointer
-\ ;asm
 HEX 
 CODE: (allotLocals) C073 0A11 A801 _LS , ;CODE                                      
-
-\ asm: @local ( -- n )
-\     _LS @@ r0 mov,      \ get dictionary pointer
-\     r3 *+ r0 a,         \ add inline index
-\     sp dect,            \ make space on stack
-\     r0 ** *sp mov,      \ read local and place on stack
-\ ;asm 
 CODE: @local C020 _LS , A033 0644 C510 ;CODE                                 
-
-\ asm: (SET) ( value -- )
-\     _LS @@ r0 mov,      \ get locals pointer
-\     r3 *+ r0 a,         \ add in-line offset
-\     *sp+ r0 ** mov,     \ move value to local
-\ ;asm
 CODE: (SET) C020 _LS , A033 C434 ;CODE                                      
-
-\ asm: (+SET) ( value -- )
-\     _LS @@ r0 mov,      \ get locals pointer
-\     r3 *+ r0 a,         \ add in-line offset
-\     *sp+ r0 ** a,       \ add value to local
-\ ;asm
 CODE: (+SET) C020 _LS , A033 A434 ;CODE                                      
 DECIMAL
 
@@ -129,20 +93,27 @@ DECIMAL
         localCount negate allotLocals
     THEN ;
 
-: str=? ( c-addr1 len1 c-addr2 len 2 -- flag )
-\ compare two strings, return true if they are identical
-\ otherwise return false.
-  todo ;
-  
+: }? ( c-addr len -- flag )
+  1 <> if drop false exit then  c@ ascii } = ;
+
+: --? ( c-addr len -- flag )
+  2 <> if drop false exit then
+  dup c@ ascii - =  swap 1+ c@ ascii - = = ;
+
+: ..} ( -- ) \ move past } in TIB
+TODO 
+NEED TO ADVANCE >IN PAST THE END OF THE TRAILING } CHARACTER
+;
+
 : locEnd? ( c-addr len -- flag )
 \ check for -- or }  return false if found, otherwise true
-  2dup s" --" str=?  s" }"  str=? or not ;
+  2dup }? -rot --? or dup if ..} then not ;
 
 : LOCALS{ ( "name...name }" -- )
     0 TO localCount
     TRUE TO locals?
     BEGIN
-        BL WORD  locEnd?
+        BL WORD  2dup locEnd?
     WHILE               \ while } or -- is not detected
         (LOCAL)         \ add local variable to locals dictionary
     REPEAT
@@ -153,9 +124,7 @@ DECIMAL
     [compile] LOCALS{
     0  localCount 1- DO COMPILE (SET)  I 2* ,  -1 +LOOP ; IMMEDIATE
     
-: compileLocal ( -- )
-    COMPILE @local
-    localOffset 1- CELLS , ( offset compiled inline ) ;
+: compileLocal ( -- ) COMPILE @local localOffset 1- CELLS , ;
 
 : findLocal ( addr len - offset+1|0)
     \ search locals dictionary for word and return offset into
@@ -180,11 +149,9 @@ DECIMAL
         localNotFound
     THEN ;
    
-: SET  ( "local" value --) \ write the value to the local variable
-    ['] (SET) doSet ; IMMEDIATE
+: SET  ( "local" value --) ['] (SET) doSet ; IMMEDIATE
     
-: +SET ( "local" value --) \ add the value to the local variable
-    ['] (+SET) doSet ; IMMEDIATE
+: +SET ( "local" value --) ['] (+SET) doSet ; IMMEDIATE
 
 : ; locals? IF localCount allotLocals FALSE TO locals? THEN 
   [COMPILE] ; ; IMMEDIATE
@@ -204,4 +171,10 @@ DECIMAL
         THEN
     THEN ;
 
+
 ' _FIND $A006 ! \ re-vector FIND to use our FIND first
+
+\ TEST
+: BOUNDS { start len -- start end }
+  start  start len + ;
+  
