@@ -113,7 +113,7 @@ DECIMAL
 	then FALSE ;
 
 : LOCALS{ ( "name...name }" -- )
-    0 TO localCount
+    ( 0 TO localCount )
     TRUE TO locals?
     BEGIN
         BL WORD  2dup --?
@@ -158,6 +158,9 @@ DECIMAL
 
 : ; locals? IF localCount allotLocals FALSE TO locals? THEN 
   [COMPILE] ; ; IMMEDIATE
+
+\ allows use of { } and LOCALS{ together in a definition
+: : 0 to localCount : ;
 
 0 value _addr   0 value _len
 : _FIND ( addr len -- cfa flag )
