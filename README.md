@@ -59,4 +59,8 @@ Local variables may also be loaded from data on the stack. To do this, the word 
 
 At runtime, start and count are initialised from the stack.
 
-Note: The input side of the stack comment are defined as local variables. The output side (after the -- symbol) are _not_ declared. They are purely comments. 
+Notes:
+
+* The input side of the stack comment are defined as local variables. The output side (after the -- symbol) are _not_ declared. They are purely comments.
+* The -- symbol, and closing } character in the stack comment are *required*. The locals parser looks for them to end locals parsing.
+* 
