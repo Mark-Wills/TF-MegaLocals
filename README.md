@@ -33,7 +33,7 @@ Example:
 ```
 
 As can be seen:
-* the local variables are populated _manually_ from the data passed in on the stack via the use of SET. This is behavior is different from traditional Forth locals implementation, which load local variables from the stack (though that behaviour is supported, see below).
+* the local variables are populated _manually_ from the data passed in on the stack via the use of `SET`. This is behavior is different from traditional Forth locals implementation, which load local variables from the stack (though that behaviour is supported, see below).
 * The data is removed from the stack as the local variables are loaded, as one would expect.
 
 Note that, as shown in the stack signature, n1 was on the top of the stack when TEST was invoked, this was loaded into the local variable `D` with the phrase `SET D`, n2 was loaded into `C`, n3 into `B` and n4 into `A`.
@@ -44,12 +44,20 @@ Once your data has been stored in local variables, it can be accessed in any ran
 In the example above, all four local variables are loaded from the data on the stack passed into TEST. However, (unlike most Forth local variable implementations) they don't have to be. Here's an example:
 
 ```
-WRITE APPROPRIATE EXAMPLE
+: diagonal ( ch -- )
+  locals{ x y }
+  10 0 do
+    x y gotoxy  dup emit
+    i set x
+    i set y
+  loop drop ;
 ```
+
+Here, x and y are defined as locals but are used as pure locals, never taking a value from the stack.
 
 ## Declaring Stack Locals
 
-Local variables may also be loaded from data on the stack. To do this, the word `{` is used to define a stack comment using normal Forth nomenclature. Local varaiables will be created that match the names on the left-hand side of the -- demarkation in the stack comment, as follows:
+Local variables may also be loaded automatically from data on the stack. To do this, the word `{` is used to define a stack comment using normal Forth nomenclature. Local varaiables will be created that match the names on the left-hand side of the `--` demarkation in the stack comment, and they will be populated with data from the stack, as follows:
 
 ```
 : bounds { start count -- end start }
@@ -63,4 +71,5 @@ Notes:
 
 * The input side of the stack comment are defined as local variables. The output side (after the -- symbol) are _not_ declared. They are purely comments.
 * The -- symbol, and closing } character in the stack comment are *required*. The locals parser looks for them to end locals parsing.
-* 
+
+
