@@ -57,7 +57,7 @@ Local variables may also be loaded from data on the stack. To do this, the word 
   start          \ push start
 ```
 
-At runtime, start and count are initialised from the stack.
+At runtime, `start` and `count` are initialised from the stack.
 
 Notes:
 
