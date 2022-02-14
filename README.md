@@ -63,6 +63,7 @@ Local variables may also be loaded automatically from data on the stack. To do t
 : bounds { start count -- end start }
   start count +  \ push end
   start          \ push start
+;
 ```
 
 At runtime, `start` and `count` are initialised from the stack.
