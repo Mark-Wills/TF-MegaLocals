@@ -71,6 +71,6 @@ At runtime, `start` and `count` are initialised from the stack.
 Notes:
 
 * The input side of the stack comment are defined as local variables. The output side (after the -- symbol) are _not_ declared. They are purely comments.
-* The -- symbol, and closing } character in the stack comment are *required*. The locals parser looks for them to end locals parsing.
+* The -- symbol, and closing } character in the stack comment are *required*. The locals parser looks for them to end locals parsing. If your definition does push any result(s) to the stack then use a normal -- } closing sequence as one would for any stack signature/comment that does not push results. E.g. `a[!] { value index -- }`.
 
 
