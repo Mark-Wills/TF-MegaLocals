@@ -11,7 +11,7 @@ Local variables are divided into two categories:
 The word `{` is used to begin the definition of a list of local variables. Definition of locals is terminated with `}`. It is designed to serve as both a locals declaration, and stack comment simultaneously. See the following example:
 
 ```
-: complexThing { x y | a b -- area }
+: complexThing { x y | a b -- nuclearLaunchCode }
   really complex stuff that uses x, y, a and b;
 ```
 
