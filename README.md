@@ -43,4 +43,4 @@ Example:
 
 #### Attribution
 
-The nomenclature, and the locals declaration syntax are shamelessly stolen from Microprocessor Engineering's (MPE) excellent VFX Forth system. See the book [Programming Forth(https://www.mpeforth.com/arena/ProgramForth.pdf)], page 101, by Stephen Pelc. 
+The nomenclature, and the locals declaration syntax are shamelessly stolen from Microprocessor Engineering's (MPE) excellent VFX Forth system. See the book [Programming Forth](https://www.mpeforth.com/arena/ProgramForth.pdf), page 101, by Stephen Pelc. 
