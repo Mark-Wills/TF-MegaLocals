@@ -28,17 +28,19 @@ Named inputs and local variables can be changed at any time using the words `SET
 Example:
 
 ```
-: TEST { a b c d -- } 
+: TEST { a b c d -- n } 
   1 +set a
   2 +set b
   3 +set c
   4 +set d
   a . b . c . d .
+  a b c d + + +
 ;
 1 2 3 4 TEST
-2 4 6 8 ok:0
+2 4 6 8 ok:1
 ```
 
+The value left on the stack is 20.
 ---
 
 #### Attribution
