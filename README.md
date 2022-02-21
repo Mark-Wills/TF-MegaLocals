@@ -4,7 +4,7 @@ This library provides an advanced local variables implementation for TurboForth.
 Local variables are divided into two categories:
 
 * Named inputs - these are named local variables that are initialised from the stack. However, whilst they are initialised from the stack, you can still write to them and change them. 
-* Local variables - these are named local varaibles are _not_ initialised from the stack - they are initialised to 0 and you can use them as true local variables to store temporary values, running totals, loop indexes etc.
+* Local variables - these are named local variables and are _not_ initialised from the stack - they are initialised to 0 and you can use them as true local variables to store temporary values, running totals, loop indexes etc.
 
 ## Declaring Local Variables
 
