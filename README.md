@@ -3,24 +3,27 @@ This library provides an advanced local variables implementation for TurboForth.
 
 Local variables are divided into two categories:
 
-* Named inputs - these are named local variables that are _initialised_ from the stack. Even though they are initialised from the stack, you can still write to them and change them. 
-* Local variables - these are named local varaibles are not initialised from the stack - they are initialised to 0 and you can use them as true local variables.
+* Named inputs - these are named local variables that are initialised from the stack. However, whilst they are initialised from the stack, you can still write to them and change them. 
+* Local variables - these are named local varaibles are _not_ initialised from the stack - they are initialised to 0 and you can use them as true local variables to store temporary values, running totals, loop indexes etc.
 
-## Named Inputs
+## Declaring Local Variables
 
 The word `{` is used to begin the definition of a list of local variables. Definition of locals is terminated with `}`. It is designed to serve as both a locals declaration, and stack comment simultaneously. See the following example:
 
 ```
-: computeArea { width height -- area }
-  width height * ;
+: complexThing { x y | a b -- area }
+  really complex stuff that uses x, y, a and b;
 ```
 
-The locals are populated from the stack and can then be referred to by name. It should be noted that a local variable, having been initialised from the stack, can be changed at any time using `SET`:
+* x and y are named inputs - they are loaded with whatever is on the stack when the word executes;
+* The | symbol ends the declaration of the named inputs, and begins the declaration of the (optional) local variables;
+* You can have just local variables with no named inputs. In this case use { | a b c d -- } i.e., don't declare any named inputs, just declare the local variables;
+* The -- symbol is optional, it is ignored. It is there to make the declaration look like a stack comment. Everything after the -- symbol is ignored until the } is encountered;
+* The } character is mandatory. It signals the end of the declaration.
 
-## Storing Data in your Local Variables
-Data is normally stored into your local variables from the data stack. However, It should be noted that a local variable, having been initialised from the stack, can be changed at any time using with the words `SET` and `+SET`. 
+## Writing to Named Inputs and Local Variables
 
-`SET` and `+SET` are analogous to `TO` and `+TO` which are used with VALUEs.
+Named inputs and local variablescan be changed at any time using the words `SET` and `+SET`. These words are analogous to `TO` and `+TO` which are used with VALUEs.
 
 Example:
 
@@ -36,26 +39,8 @@ Example:
 2 4 6 8 ok:0
 ```
 
+---
 
+## Attribution
 
-Here, x and y are defined as locals but are used as pure locals, never taking a value from the stack.
-
-## Declaring Stack Locals
-
-Local variables may also be loaded automatically from data on the stack. To do this, the word `{` is used to define a stack comment using normal Forth nomenclature. Local varaiables will be created that match the names on the left-hand side of the `--` demarkation in the stack comment, and they will be populated with data from the stack, as follows:
-
-```
-: bounds { start count -- end start }
-  start count +  \ push end
-  start          \ push start
-;
-```
-
-At runtime, `start` and `count` are initialised from the stack.
-
-Notes:
-
-* The input side of the stack comment are defined as local variables. The output side (after the -- symbol) are _not_ declared. They are purely comments.
-* The -- symbol, and closing } character in the stack comment are *required*. The locals parser looks for them to end locals parsing. If your definition does push any result(s) to the stack then use a normal -- } closing sequence as one would for any stack signature/comment that does not push results. E.g. `a[!] { value index -- }`.
-
-
+The nomenclature, and the locals declaration syntax are shamelessly stolen from Microprocessor Engineering's (MPE) excellent VFX Forth system. See the book ['Programming Forth'(https://www.mpeforth.com/arena/ProgramForth.pdf)], page 101, by Stephen Pelc. 
