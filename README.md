@@ -23,7 +23,7 @@ The word `{` is used to begin the definition of a list of local variables. Defin
 
 ## Writing to Named Inputs and Local Variables
 
-Named inputs and local variablescan be changed at any time using the words `SET` and `+SET`. These words are analogous to `TO` and `+TO` which are used with VALUEs.
+Named inputs and local variables can be changed at any time using the words `SET` and `+SET`. These words are analogous to `TO` and `+TO` which are used with VALUEs.
 
 Example:
 
