@@ -1,57 +1,42 @@
 # Local variable implementation for TurboForth V1.3
 This library provides an advanced local variables implementation for TurboForth.
 
-## Declaration of Locals
+Local variables are divided into two categories:
 
-### Using LOCALS{
+* Named inputs - these are named local variables that are _initialised_ from the stack. Even though they are initialised from the stack, you can still write to them and change them. 
+* Local variables - these are named local varaibles are not initialised from the stack - they are initialised to 0 and you can use them as true local variables.
 
-The word `LOCALS{` is used to begin the definition of a list of local variables. Definition of locals is terminated with `}` as in the following example:
+## Named Inputs
+
+The word `{` is used to begin the definition of a list of local variables. Definition of locals is terminated with `}`. It is designed to serve as both a locals declaration, and stack comment simultaneously. See the following example:
 
 ```
-: computeArea ( w h -- area)
-  LOCALS{ height width } 
-  SET height   SET width
-  height width * ;
+: computeArea { width height -- area }
+  width height * ;
 ```
 
-In this example, two local variables are declared: height and width. The order in which local variables are declared is not important, since, unlike other local variable implementations, the locals do not have to be initialiased from the data stack (though you can do that if you want to - see the next section). Note that local variables are referenced in your code by their names. Naming a local variable in a colon definition causes its *value* (not its address) to be pushed to the stack. Local variables (in this implementation) work very similiarly to VALUEs.
+The locals are populated from the stack and can then be referred to by name. It should be noted that a local variable, having been initialised from the stack, can be changed at any time using `SET`:
 
-### Storing Data in your Local Variables
-Data is stored into your local variables from the data stack, with the words `SET` and `+SET`. `SET` and `+SET` are analogous to `TO` and `+TO` which are used with VALUEs.
+## Storing Data in your Local Variables
+Data is normally stored into your local variables from the data stack. However, It should be noted that a local variable, having been initialised from the stack, can be changed at any time using with the words `SET` and `+SET`. 
+
+`SET` and `+SET` are analogous to `TO` and `+TO` which are used with VALUEs.
 
 Example:
 
 ```
-: TEST ( n4 n3 n2 n1 -- ) 
-  LOCALS{ A B C D }
-
-  SET D  SET C  SET B  SET A
-  A . B . C . D .
+: TEST { a b c d -- } 
+  1 +set a
+  2 +set b
+  3 +set c
+  4 +set d
+  a . b . c . d .
 ;
 1 2 3 4 TEST
-1 2 3 4 ok:0
+2 4 6 8 ok:0
 ```
 
-As can be seen:
-* the local variables are populated _manually_ from the data passed in on the stack via the use of `SET`. This is behavior is different from traditional Forth locals implementation, which load local variables from the stack (though that behaviour is supported, see below).
-* The data is removed from the stack as the local variables are loaded, as one would expect.
 
-Note that, as shown in the stack signature, n1 was on the top of the stack when TEST was invoked, this was loaded into the local variable `D` with the phrase `SET D`, n2 was loaded into `C`, n3 into `B` and n4 into `A`.
-
-#### Accessing the Local Variables
-Once your data has been stored in local variables, it can be accessed in any random order, simply by name; no stack juggling or use of the return stack is required.
-
-In the example above, all four local variables are loaded from the data on the stack passed into TEST. However, (unlike most Forth local variable implementations) they don't have to be. Here's an example:
-
-```
-: diagonal ( ch -- )
-  locals{ x y }
-  10 0 do
-    x y gotoxy  dup emit
-    i set x
-    i set y
-  loop drop ;
-```
 
 Here, x and y are defined as locals but are used as pure locals, never taking a value from the stack.
 
