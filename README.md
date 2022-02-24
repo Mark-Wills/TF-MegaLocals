@@ -64,7 +64,7 @@ How might we multiply the above by:
 | 7 (g)  | 8 (h)  |
 |--------|--------|
 | 9 (i)  | 10 (j) |
-| 11 (K) | 12 (l) |
+| 11 (k) | 12 (l) |
 
 
 How might we write a word to perform a 2x2 matrix multiplcation by a given scalar?
