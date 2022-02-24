@@ -45,7 +45,7 @@ Example:
 1 2 3 4 TEST
 ```
 
-![Output from the above example](example.png "Example")
+![Output from the above example](example.png "Output from the above example")
 
 ---
 
