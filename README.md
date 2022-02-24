@@ -12,7 +12,7 @@ The word `{` is used to begin the definition of a list of local variables. Defin
 
 ```
 : complexThing { x y | a b -- nuclearLaunchCode }
-  really complex stuff that uses x, y, a and b;
+  really complex stuff that uses x, y, a and b ;
 ```
 
 * x and y are named inputs - Two values are _popped_ from the stack and loaded into x and y. Whilst they loaded from data on the stack, you _can_ write to them.
