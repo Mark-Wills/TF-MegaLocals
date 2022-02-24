@@ -60,8 +60,15 @@ Here is an example of how a 3x2 matrix may be multiplied by a 2x3 matrix. Given 
 How might we write a word to perform the above calculation?
 
 ```forth
-: 3.2x2.3 { a b c  d e f  g h  i j  k l  scalar | ra rb rc rd -- ra rb rc rd }
+: mm { a b c  d e f  g hh  ii jj  k l | ra rb rc rd -- ra rb rc rd }
+  a g  *  b ii *  c k * + + set ra  
+  a hh *  b jj *  c l * + + set rb   
+  d g  *  e ii *  f k * + + set rc   
+  d hh *  e jj *  f l * + + set rd
+  ra rb rc rd ;
 ```
+
+Note: hh ii and jj are used, as i, j, and k are reserved words in Forth.
 
 ---
 
