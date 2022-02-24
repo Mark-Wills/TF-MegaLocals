@@ -18,8 +18,8 @@ The word `{` is used to begin the definition of a list of local variables. Defin
 * x and y are named inputs - Two values are _popped_ from the stack and loaded into x and y. Whilst they loaded from data on the stack, you _can_ write to them.
 * The | symbol ends the declaration of the named inputs, and begins the declaration of the (optional) local variables. Local variables are _not_ loaded from the stack. They are internal, local variables that can be written to and read from. **CAUTION:** At runtime they are _uninitialised_ and therefore may contain any random value.
 * You can have just local variables with no named inputs. In this case use `{ | a b c d -- }` i.e., don't declare any named inputs, just declare the local variables.
-* The -- symbol is optional, it is ignored. It is there to make the declaration look like a stack comment. Everything after the -- symbol is ignored until the } is encountered.
-* The } character is mandatory. It signals the end of the declaration. If you omit it you'll probably crash the system!
+* The `--` symbol is optional, it is ignored. It is there to make the declaration look like a stack comment. Everything after the -- symbol is ignored until the } is encountered.
+* The `}` character is mandatory. It signals the end of the declaration. If you omit it you'll probably crash the system!
 
 ## Writing to Named Inputs and Local Variables
 
