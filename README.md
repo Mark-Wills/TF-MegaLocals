@@ -70,7 +70,17 @@ How might we write a word to perform the above calculation?
 1 2 3   4 5 6   7 8   9 10   11 12 mm
 ```
 
-**Note:** hh, ii, and jj are used, as i, j, and k are reserved words in Forth. Also, assigning the results of the row/column multiplications are somewhat superfluous in this rather contrived example, as the results can simply be left on the stack.
+**Note:** hh, ii, and jj are used, as i, j, and k are reserved words in Forth. Also, assigning the results of the row/column multiplications to local variables are somewhat superfluous in this rather contrived example, as the results can simply be left on the stack. The following acheives the same result:
+
+```forth
+: mm { a b c  d e f  g hh  ii jj  k l | ra rb rc rd -- ra rb rc rd }
+  \ 2x3 x 3x2 matrix multiply
+  a g  *  b ii *  c k * + + 
+  a hh *  b jj *  c l * + +   
+  d g  *  e ii *  f k * + +    
+  d hh *  e jj *  f l * + + ;
+1 2 3   4 5 6   7 8   9 10   11 12 mm
+```
 
 ---
 
