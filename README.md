@@ -1,7 +1,7 @@
 # Local variable implementation for TurboForth V1.3
 This library provides an advanced local variables implementation for TurboForth.
 
-Local variables are divided into two categories:<span style="color:blue">some *blue* text</span>.
+Local variables are divided into two categories: <span style="color:blue">some *blue* text</span>.
 
 * Named inputs - these are named local variables that are initialised from the stack. However, whilst they are initialised from the stack, you can still write to them and change them. 
 * Local variables - these are named local variables and are _not_ initialised from the stack - they are initialised to 0 and you can use them as true local variables to store temporary values, running totals, loop indexes etc.
