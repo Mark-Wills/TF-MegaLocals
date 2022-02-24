@@ -45,7 +45,7 @@ Example:
 1 2 3 4 TEST
 ```
 
-The value left on the stack is 20.
+![Output from the above example](example.png "Example")
 
 ---
 
