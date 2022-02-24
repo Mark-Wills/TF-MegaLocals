@@ -61,6 +61,7 @@ How might we write a word to perform the above calculation?
 
 ```forth
 : mm { a b c  d e f  g hh  ii jj  k l | ra rb rc rd -- ra rb rc rd }
+  \ 2x3 x 3x2 matrix multiply
   a g  *  b ii *  c k * + + set ra  
   a hh *  b jj *  c l * + + set rb   
   d g  *  e ii *  f k * + + set rc   
