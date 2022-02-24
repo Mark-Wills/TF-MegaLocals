@@ -39,7 +39,7 @@ Example:
   cr ." d=" d .
   cr ." x=" x .
   cr ." y=" y .
-  cr ." y=" z .
+  cr ." z=" z .
   ( compute sum of x y & z and leave on stack:) x y z + + 
 ;
 1 2 3 4 TEST
