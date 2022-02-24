@@ -55,16 +55,16 @@ The output from the above test program is shown below. As be can seen, using loc
 
 Here is an example of how a 3x2 matrix may be multiplied by a 2x3 matrix. Given the following matrix:
 
-| 1 | 2 | 3 |
-|---|---|---|
-| 4 | 5 | 6 |
+| 1 (a) | 2 (b) | 3 (c) |
+|-------|-------|-------|
+| 4 (d) | 5 (e) | 6 (f) |
 
 How might we multiply the above by:
 
-| 7  | 8  |
-|----|----|
-| 9  | 10 |
-| 11 | 12 |
+| 7 (g)  | 8 (h)  |
+|--------|--------|
+| 9 (i)  | 10 (j) |
+| 11 (K) | 12 (l) |
 
 
 How might we write a word to perform a 2x2 matrix multiplcation by a given scalar?
