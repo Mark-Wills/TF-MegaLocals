@@ -24,14 +24,14 @@
 \ The locals stack sits immediately above the hash table and grows
 \ towards lower memory addresses (the hash table grows to higher addresses).
 
-\ This library takes 1180 bytes.
+\ This library takes 1176 bytes.
 
 0 VALUE locals?        \ true if a colon-def has locals
 0 VALUE localCount     \ number of locals in a colon def
 0 VALUE localOffset    \ index into locals stack
 0 VALUE locState       \ state machine for NLOCAL
 0 VALUE niCount        \ named input count
-$FFE0 VALUE dictAddr   \ address of start of local dictionary
+$FFD0 VALUE dictAddr   \ address of start of local dictionary
 $A006 @ VALUE FINDV    \ save contents of FIND vector
 VARIABLE _LS           \ top of local stack pointer
 dictAddr _LS !         \ set local stack pointer
@@ -104,14 +104,14 @@ DECIMAL
     case 
       0 of 
         locState case
-          0 of (NLOCAL) 1 +to niCount nicount . endof \ named input
-          1 of (NLOCAL) endof                         \ named local
-          2 of 2drop    endof                         \ -- symbol
+          0 of (NLOCAL) 1 +to niCount endof \ named input
+          1 of (NLOCAL) endof               \ named local
+          2 of 2drop    endof               \ --
         endcase 0
       endof
       1 of 2drop 1 to locState 0 endof
       2 of 2drop 2 to locState 0 endof
-      3 of 2drop 3 to locState 1 endof \ } ( end of stack comment)
+      3 of 2drop 3 to locState 1 endof \ }
     endcase
   until
   localCount negate allotLocals
