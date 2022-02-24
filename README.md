@@ -53,25 +53,14 @@ The output from the above test program is shown below. As be can seen, using loc
 
 ### Example 2
 
-Here is an example of how a 3x2 matrix may be multiplied by a 2x3 matrix. Given the following matrix:
+Here is an example of how a 3x2 matrix may be multiplied by a 2x3 matrix. Given the following matrix problem:
 
-| 1 (a) | 2 (b) | 3 (c) |
-|-------|-------|-------|
-| 4 (d) | 5 (e) | 6 (f) |
+![Example matrix multiplication problem (stack positions shown in brackets)](/images/matrix.png)
 
-How might we multiply the above by:
-
-| 7 (g)  | 8 (h)  |
-|--------|--------|
-| 9 (i)  | 10 (j) |
-| 11 (k) | 12 (l) |
-
-
-How might we write a word to perform a 2x2 matrix multiplcation by a given scalar?
+How might we write a word to perform the above calculation?
 
 ```forth
 : 3.2x2.3 { a b c  d e f  g h  i j  k l  scalar | ra rb rc rd -- ra rb rc rd }
-
 ```
 
 ---
