@@ -49,7 +49,7 @@ Named inputs and local variables can be changed at any time using the words `SET
 
 The output from the above test program is shown below. As be can seen, using locals can completely eliminate 'stack juggling'.
 
-![Output from the above example](example.png "Output from the above example")
+![Output from the above example](/images/example.png "Output from the above example")
 
 ### Example 2
 
