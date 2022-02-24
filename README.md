@@ -25,7 +25,9 @@ The word `{` is used to begin the definition of a list of local variables. Defin
 
 Named inputs and local variables can be changed at any time using the words `SET` and `+SET`. These words are analogous to `TO` and `+TO` which are used with VALUEs.
 
-Example:
+## Example:
+
+### Example 1
 
 ```forth
 : TEST { a b c d | x y z -- n } 
@@ -45,7 +47,32 @@ Example:
 1 2 3 4 TEST
 ```
 
+The output from the above test program is shown below. As be can seen, using locals can completely eliminate 'stack juggling'.
+
 ![Output from the above example](example.png "Output from the above example")
+
+### Example 2
+
+Here is an example of how a 3x2 matrix may be multiplied by a 2x3 matrix. Given the following matrix:
+
+| 1 | 2 | 3 |
+|---|---|---|
+| 4 | 5 | 6 |
+
+How might we multiply the above by:
+
+| 7  | 8  |
+|----|----|
+| 9  | 10 |
+| 11 | 12 |
+
+
+How might we write a word to perform a 2x2 matrix multiplcation by a given scalar?
+
+```forth
+: 3.2x2.3 { a b c  d e f  g h  i j  k l  scalar | ra rb rc rd -- ra rb rc rd }
+
+```
 
 ---
 
