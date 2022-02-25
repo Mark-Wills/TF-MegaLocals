@@ -82,6 +82,28 @@ How might we write a word to perform the above calculation?
 1 2 3   4 5 6   7 8   9 10   11 12 mm
 ```
 
+### Example 3
+
+Looking for the first occurence of a character in a _c-addr len_ string is surprisingly complex in standard Forth, and requires some stack machinations:
+
+```forth
+: instr ( chr c-addr len -- index|-1 )
+  0 rot begin 
+    dup c@ 4 pick = if drop nip nip exit 
+	else 1+ swap 1+ swap 
+	then over 3 pick =
+  until 
+  2drop 2drop -1 ;
+```
+
+The above word searches a string (c-addr len) for the first occurence of the character chr and returns its position, or -1 if not found. This was the best I could come up with (others may be able to do better). However, the complexity vanishes when locals are used:
+
+```forth
+: instr { chr start len -- index|-1 }
+  -1 ( assume not found)
+  len 0 do start i + c@ chr = if drop i leave then loop ;
+```
+
 ---
 
 #### Attribution
