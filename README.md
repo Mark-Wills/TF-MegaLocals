@@ -89,10 +89,11 @@ Looking for the first occurence of a character in a _c-addr len_ string is surpr
 ```forth
 : instr ( chr c-addr len -- index|-1 )
   0 rot begin 
-    dup c@ 4 pick = if drop nip nip exit 
-	else 1+ swap 1+ swap 
-	then over 3 pick =
-  until 
+    dup c@ 4 pick = if 
+      drop nip nip exit 
+    else 
+      1+ swap 1+ swap 
+	then over 3 pick = until 
   2drop 2drop -1 ;
 ```
 
