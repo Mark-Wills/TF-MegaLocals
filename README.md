@@ -97,7 +97,9 @@ Looking for the first occurence of a character in a _c-addr len_ string is surpr
   2drop 2drop -1 ;
 ```
 
-The above word searches a string (c-addr len) for the first occurence of the character chr and returns its position, or -1 if not found. This was the best I could come up with (others may be able to do better). However, the complexity vanishes when locals are used:
+The above word searches a string (c-addr len) for the first occurence of the character chr and returns its position, or -1 if not found. This was the best I could come up with (others may be able to do better) without resorting to the use of variables.
+
+However, the complexity vanishes when locals are used:
 
 ```forth
 : instr { chr start len -- index|-1 }
