@@ -119,14 +119,12 @@ A new version of WORDS than can take an optional filter. If a filter is supplied
   cr  bl word if
     c@ toLower set chr
     latest @ set lfa  0 set cnt 
-    begin
-      lfa @ 0<> while
-        lfa 4 + c@ toLower chr = if 
-          lfa 4 + lfa 2+ @ 15 and type
-          ascii : emit lfa >cfa $. 2 spaces
-          1 +set cnt
-        then
-      lfa @ set lfa 
+    begin lfa @ 0<> while
+      lfa 4 + c@ toLower chr = if 
+        lfa 4 + lfa 2+ @ 15 and type
+        ascii : emit lfa >cfa $. 2 spaces
+        1 +set cnt
+      then lfa @ set lfa 
     repeat
     cr cnt . ." words found." cr 
   else
