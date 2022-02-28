@@ -133,7 +133,7 @@ A new version of WORDS than can take an optional filter. If a filter is supplied
     words
   then ;
   ```
-
+![Output from the WORDS example](/images/words.png "Output from the WORDS example")
 ---
 
 #### Attribution
