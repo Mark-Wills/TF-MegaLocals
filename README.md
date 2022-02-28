@@ -128,7 +128,7 @@ A new version of WORDS than can take an optional filter. If a filter is supplied
     repeat
     cr cnt . ." words found." cr 
   else
-    words
+    drop words
   then ;
   ```
 ![Output from the WORDS example](/images/words.png "Output from the WORDS example")
