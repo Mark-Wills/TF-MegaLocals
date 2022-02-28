@@ -116,8 +116,8 @@ A new version of WORDS than can take an optional filter. If a filter is supplied
   dup ascii A ascii Z 1+ within if 32 or then ;
 
 : words { | lfa chr cnt -- }
-  cr  bl word if
-    c@ toLower set chr
+  bl word if
+    cr c@ toLower set chr
     latest @ set lfa  0 set cnt 
     begin lfa @ 0<> while
       lfa 4 + c@ toLower chr = if 
