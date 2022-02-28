@@ -107,6 +107,33 @@ However, the complexity vanishes when locals are used:
   len 0 do start i + c@ chr = if drop i leave then loop ;
 ```
 
+### Example 4
+
+A new version of WORDS than can take an optional filter. If a filter is supplied (for example, `WORDS F`), only words beginning with the filter character are displayed, along with their code-field address, and a summary of the number of words found. If no filter is provided, the standard version of WORDS is used. Note that due to the use of local variables, there are no stack thrashing words at all. 
+
+```forth
+: toLower ( CHR -- chr )
+  dup ascii A ascii Z 1+ within if 32 or then ;
+
+: test { | lfa chr cnt -- }
+  cr  bl word if
+    c@ toLower set chr
+    latest @ set lfa 0 set cnt 
+    begin
+      lfa @ 0<> while
+        lfa 4 + c@ toLower chr = if 
+          lfa 4 + lfa 2+ @ 15 and type
+          ascii : emit lfa >cfa $. 2 spaces
+          1 +set cnt
+        then
+      lfa @ set lfa 
+    repeat
+    cr cnt . ." words found." cr 
+  else
+    words
+  then ;
+  ```
+
 ---
 
 #### Attribution
