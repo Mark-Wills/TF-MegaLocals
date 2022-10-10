@@ -3,7 +3,7 @@ This library provides an advanced local variables implementation for TurboForth.
 
 Local variables are divided into two categories:
 
-* Named inputs - these are named local variables that are initialised from the stack. However, whilst a and b are _initialised_ from the stack, you can still write to them and change them. 
+* Named inputs - these are named local variables that are initialised from the stack. However, whilst they are initialised from the stack, you can still write to them and change them.
 * Local variables - these are named local variables and are _not_ initialised from the stack. You can use them as true local variables to store temporary values, running totals, loop indexes etc.
 
 ## Declaring Local Variables
@@ -15,7 +15,7 @@ The word `{` is used to begin the definition of a list of local variables. Defin
   really complex stuff that uses x, y, a and b ;
 ```
 
-* x and y are named inputs - Two values are _popped_ from the stack and loaded into x and y. Whilst they are loaded from data on the stack, you _can_ write to them.
+* x and y are named inputs - Two values are _popped_ from the stack and loaded into x and y. Whilst x and y are _loaded_ from data on the stack, you _can_ write to them.
 * The | symbol ends the declaration of the named inputs, and begins the declaration of the (optional) local variables. Local variables are _not_ loaded from the stack. They are internal (to the word), local variables that can be written to and read from. **CAUTION:** At runtime they are _uninitialised_ and therefore may contain any random value.
 * You can have just local variables with no named inputs. In this case use `{ | a b c d -- }` i.e., don't declare any named inputs, just declare the local variables.
 * The `--` symbol is optional, it is ignored. It is there to make the declaration look like a stack comment. Everything after the `--` symbol is ignored until the closing `}` is encountered.
